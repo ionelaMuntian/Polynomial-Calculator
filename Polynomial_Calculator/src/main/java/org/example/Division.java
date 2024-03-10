@@ -1,67 +1,65 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Division {
-    private Polynomial divident;
+    private Polynomial dividend;
     private Polynomial divisor;
     private Polynomial quotient;
-    private Polynomial reminder;
+    private Polynomial remainder;
 
     public Division(Polynomial polynomial1, Polynomial polynomial2) {
-        this.divident = polynomial1;
+        this.dividend = polynomial1;
         this.divisor = polynomial2;
         this.quotient = new Polynomial();
-        this.reminder = new Polynomial();
+        this.remainder = new Polynomial();
     }
 
     public Polynomial getQuotient() {
         return quotient;
     }
 
-    public Polynomial getReminder() {
-        return reminder;
+    public Polynomial getRemainder() {
+        return remainder;
     }
 
-    public Polynomial divisonMonomyals(Map.Entry<Integer, Integer> a, Map.Entry<Integer, Integer> b) {
+    public Polynomial divisionMonomials(Map.Entry<Integer, Polynomial.Coefficient> a, Map.Entry<Integer, Polynomial.Coefficient> b) {
         Polynomial term = new Polynomial();
-        term.addMonomial(a.getKey() - b.getKey(), a.getValue() / b.getValue());
+
+        // Division between 2 fractions : (a1/a2)/(b1/b2)=(a1*b2)/(a2*b1)
+        int numerator = a.getValue().getNumerator() * b.getValue().getDenominator();
+        int denominator = a.getValue().getDenominator() * b.getValue().getNumerator();
+        int power = a.getKey() - b.getKey();
+        term.addMonomial(power, numerator, denominator);
+        quotient.addMonomial(power, numerator, denominator);
         return term;
     }
 
     public void computeDivision() {
-        Map.Entry<Integer, Integer> maxDivident = divident.firstMonomial();
-        Map.Entry<Integer, Integer> maxDivisor = divisor.firstMonomial();
-        if (divisor.firstMonomial() == null) {
-            Application.appendText("division by 0 is not possible!", false);
+        Map.Entry<Integer, Polynomial.Coefficient> maxDividend = dividend.firstMonomial();
+        Map.Entry<Integer, Polynomial.Coefficient> maxDivisor = divisor.firstMonomial();
+
+        if (divisor.firstMonomial().getValue().getNumerator()==0) {
+            Application.appendText("Division by 0 is not possible!\n", false);
             return;
         }
 
-        while (maxDivident != null && maxDivident.getKey() >= maxDivisor.getKey()) {
-            Polynomial term = divisonMonomyals(maxDivident, maxDivisor);
-            quotient.addMonomial(maxDivident.getKey() - maxDivisor.getKey(), maxDivident.getValue() / maxDivisor.getValue());
-            System.out.println(maxDivident.getKey() - maxDivisor.getKey() + " " + maxDivident.getValue() / maxDivisor.getValue());
+        while (maxDividend != null && maxDividend.getKey() >= maxDivisor.getKey()) {
+            Polynomial term = divisionMonomials(maxDividend, maxDivisor);
 
+            //multiply each term from the divisor with 'term'
             Multiplication multiplication = new Multiplication(divisor, term);
             multiplication.computeMultiplication();
-            Polynomial multiplicationPolynom = multiplication.getPolynomial3();
+            Polynomial multiplicationPolynomial = multiplication.getPolynomial3();
 
-            for (Map.Entry<Integer, Integer> entry1 : multiplicationPolynom.getMap().entrySet()) {
-                System.out.println("Multiplication result:");
-                System.out.println(entry1.getValue() + " with power " + entry1.getKey());
-            }
-
-            // Subtract the multiplicationPolynom from the dividend
-            Subtraction subtraction = new Subtraction(divident, multiplicationPolynom);
+            // Subtract the multiplicationPolynomial from the dividend
+            Subtraction subtraction = new Subtraction(dividend, multiplicationPolynomial);
             subtraction.computeSubtraction();
-            divident = subtraction.getPolynomial3();
-
-            maxDivident = divident.firstMonomial();
+            dividend = subtraction.getPolynomial3();
+            maxDividend = dividend.firstMonomial();
         }
 
-        // Set the reminder to the remaining dividend after the division process
-        reminder = divident;
+        // Set the remainder to the remaining dividend after the division process
+        remainder = dividend;
     }
 }

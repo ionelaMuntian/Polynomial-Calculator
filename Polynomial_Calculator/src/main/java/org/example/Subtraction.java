@@ -20,39 +20,47 @@ public class Subtraction {
     }
 
     public void computeSubtraction() {
-        for (Map.Entry<Integer, Integer> entry1 : polynomial1.getMap().entrySet()) {
+        for (Map.Entry<Integer, Polynomial.Coefficient> entry1 : polynomial1.getMap().entrySet()) {
             Integer power = entry1.getKey();
-            Integer number = entry1.getValue();
+            Polynomial.Coefficient coefficient1 = entry1.getValue();
 
-            //System.out.println(coefficient + " " + power);
             if (polynomial2.getMap().containsKey(power)) {
-                Integer sum = number - polynomial2.getMap().get(power);
-                polynomial3.addMonomial(power, sum);
+                Polynomial.Coefficient coefficient2 = polynomial2.getMap().get(power);
+                int divisor = 1, dividendDiff = 0;
+
+                //Check if the 2 coefficients have the same denominator
+                if (coefficient1.getDenominator() == coefficient2.getDenominator()) {
+                    dividendDiff = coefficient1.getNumerator() - coefficient2.getNumerator();
+                    divisor = coefficient1.getDenominator();
+                } else {
+                    dividendDiff = coefficient1.getNumerator() * coefficient2.getDenominator() - coefficient2.getNumerator() * coefficient1.getDenominator();
+                    divisor = coefficient1.getDenominator()*coefficient2.getDenominator();
+                }
+                polynomial3.addMonomial(power, dividendDiff, divisor);
             } else {
-                polynomial3.addMonomial(power, number);
+                polynomial3.addMonomial(power, coefficient1.getNumerator(), coefficient1.getDenominator());
             }
         }
 
         // Add remaining terms from polynomial2
-        for (Map.Entry<Integer, Integer> entry2 : polynomial2.getMap().entrySet()) {
+        for (Map.Entry<Integer, Polynomial.Coefficient> entry2 : polynomial2.getMap().entrySet()) {
             Integer power = entry2.getKey();
-            Integer number = entry2.getValue();
+            Polynomial.Coefficient coefficient = entry2.getValue();
 
             if (!polynomial3.getMap().containsKey(power)) {
-                polynomial3.addMonomial(power, -number);
+                polynomial3.addMonomial(power,-coefficient.getNumerator(),coefficient.getDenominator());
             }
         }
 
-        //remove the terms with coefficient 0
-        ArrayList<Integer> unnecesaryTerms= new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry2 : polynomial3.getMap().entrySet()) {
-            if (entry2.getValue() == 0) {
-                unnecesaryTerms.add(entry2.getKey());
+        // Remove the terms with coefficient 0
+        ArrayList<Integer> unnecessaryTerms = new ArrayList<>();
+        for (Map.Entry<Integer, Polynomial.Coefficient> entry : polynomial3.getMap().entrySet()) {
+            if (entry.getValue().getNumerator() == 0) {
+                unnecessaryTerms.add(entry.getKey());
             }
         }
-        for (Integer i : unnecesaryTerms) {
-           polynomial3.getMap().remove(i);
+        for (Integer key : unnecessaryTerms) {
+            polynomial3.getMap().remove(key);
         }
-
     }
 }

@@ -1,5 +1,7 @@
 package org.example;
+
 import java.util.Map;
+
 public class Derivative {
     private Polynomial polynomial1;
     private Polynomial polynomial2;
@@ -14,18 +16,19 @@ public class Derivative {
     }
 
     public void computeDerivative() {
-        for (Map.Entry<Integer, Integer> entry : polynomial1.getMap().entrySet()) {
-            Integer power= entry.getKey();
-            Integer number= entry.getValue();
-            if (power > 0) {
-                number = number * power;
-                power = power - 1;
-                polynomial2.addMonomial(power, number);
-            } else {
-                polynomial2.addMonomial(0, 0);
-            }
+        for (Map.Entry<Integer, Polynomial.Coefficient> entry : polynomial1.getMap().entrySet()) {
+            Integer power = entry.getKey();
+            Polynomial.Coefficient coefficient = entry.getValue();
 
+            if (power > 0) {
+                int derivativeNumerator = coefficient.getNumerator() * power;
+                int derivativeDenominator = coefficient.getDenominator();
+                power = power - 1;
+                polynomial2.addMonomial(power, derivativeNumerator, derivativeDenominator);
+            } else {
+                polynomial2.addMonomial(0, 0,1);
+            }
         }
     }
-
 }
+

@@ -1,28 +1,38 @@
 package org.example;
-
 import java.util.*;
-
-
 public class Polynomial {
-    private HashMap<Integer, Integer> map;
+    private HashMap<Integer, Coefficient> map;
 
     public Polynomial() {
         this.map = new HashMap<>();
     }
 
-    public HashMap<Integer, Integer> getMap() {
+    public HashMap<Integer, Coefficient> getMap() {
         return map;
     }
 
-    public void addMonomial(Integer power, Integer number) {
-        map.put(power, number);
+    public void addMonomial(Integer power, Integer numerator, Integer denominator) {
+
+        /*If a monomial with the same power already is in the HashMap, the monomials will be added so that
+         there is no need to create a linked list*/
+
+        if (!this.getMap().containsKey(power)) {
+            map.put(power, new Coefficient(numerator, denominator));
+        } else {
+            Integer existingNumerator = this.getMap().get(power).getNumerator();
+            Integer existingDenominator = this.getMap().get(power).getDenominator();
+
+            numerator = numerator * existingDenominator + existingNumerator * denominator;
+            denominator = denominator * existingDenominator;
+            map.put(power, new Coefficient(numerator, denominator));
+        }
     }
 
     /*firstMonomial finds the monomial with the greatest power from the polynomial*/
-    public Map.Entry<Integer, Integer> firstMonomial() {
-        Map.Entry<Integer, Integer> maxEntry = null;
-        for (Map.Entry<Integer, Integer> entry : this.map.entrySet()) {
-            if (maxEntry == null || ((entry.getKey() > maxEntry.getKey()) && entry.getValue() != 0)) {
+    public Map.Entry<Integer, Coefficient> firstMonomial() {
+        Map.Entry<Integer, Coefficient> maxEntry = null;
+        for (Map.Entry<Integer, Coefficient> entry : this.map.entrySet()) {
+            if (maxEntry == null || ((entry.getKey() > maxEntry.getKey()) && entry.getValue().getNumerator() != 0)) {
                 maxEntry = entry;
             }
         }
@@ -31,24 +41,41 @@ public class Polynomial {
     }
 
     public void display() {
-        TreeMap<Integer, Integer> reverseMap = new TreeMap<>(java.util.Collections.reverseOrder());
+        TreeMap<Integer, Coefficient> reverseMap = new TreeMap<>(java.util.Collections.reverseOrder());
         reverseMap.putAll(this.map);
 
         int ok = 1;
-        for (Map.Entry<Integer, Integer> entry : reverseMap.entrySet()) {
-            if (ok == 0 && entry.getValue() >= 0)
+        for (Map.Entry<Integer, Coefficient> entry : reverseMap.entrySet()) {
+            Coefficient coefficient = entry.getValue();
+            if (ok == 0 && coefficient.getNumerator() >= 0)
                 Application.appendText("+", false);
             ok = 0;
-            Application.appendText(String.valueOf(entry.getValue()), false);
+            Application.appendText(String.valueOf(coefficient.getNumerator()), false);
             Application.appendText("x", false);
             Application.appendText(String.valueOf(entry.getKey()), true);
 
-            if (Objects.equals(Application.operation, "integral")) {
+            if (coefficient.getDenominator() != 1) {
                 Application.appendText("/", false);
-                Application.appendText(String.valueOf(entry.getKey()), false);
+                Application.appendText(String.valueOf(coefficient.getDenominator()), false);
             }
         }
     }
 
-}
+    static class Coefficient {
+        private int numerator;
+        private int denominator;
 
+        public Coefficient(int numerator, int denominator) {
+            this.numerator = numerator;
+            this.denominator = denominator;
+        }
+
+        public int getNumerator() {
+            return numerator;
+        }
+
+        public int getDenominator() {
+            return denominator;
+        }
+    }
+}

@@ -103,55 +103,28 @@ public class Application extends JFrame implements ActionListener {
         // Checking which button was clicked
         switch (e.getActionCommand()) {
             case "0":
-                buttonNumber_onAction(0);
-                break;
             case "1":
-                buttonNumber_onAction(1);
-                break;
             case "2":
-                buttonNumber_onAction(2);
-                break;
             case "3":
-                buttonNumber_onAction(3);
-                break;
             case "4":
-                buttonNumber_onAction(4);
-                break;
             case "5":
-                buttonNumber_onAction(5);
-                break;
             case "6":
-                buttonNumber_onAction(6);
-                break;
             case "7":
-                buttonNumber_onAction(7);
-                break;
             case "8":
-                buttonNumber_onAction(8);
-                break;
             case "9":
-                buttonNumber_onAction(9);
+                buttonNumber_onAction(Integer.parseInt(e.getActionCommand()));
                 break;
             case "^":
                 if (lastInsertedCh.equals("x")) {
                     power = true;
                 }
                 break;
-            case "_":
-                buttonSymbol_onAction("_");
-                break;
-            case "+":
-                buttonSymbol_onAction("+");
-                break;
             case "-":
-                buttonSymbol_onAction(" - ");
-                minus = true;
-                break;
+            case "_":
+            case "+":
             case "*":
-                buttonSymbol_onAction(" * ");
-                break;
             case "/":
-                buttonSymbol_onAction(" / ");
+                buttonSymbol_onAction(e.getActionCommand());
                 break;
             case "integral":
                 operation = "integral";
@@ -176,14 +149,7 @@ public class Application extends JFrame implements ActionListener {
                 minus = false;
                 break;
             case "Clear":
-                textPane.setText(""); // Clear the text pane
-                minus = false;
-                power = false;
-                enterPressed = false;
-                currentNumber = 0;
-                currentPower = 0;
-                polynomial1.getMap().clear();
-                polynomial2.getMap().clear();
+                clearFields();
                 break;
         }
         lastInsertedCh = e.getActionCommand();
@@ -213,6 +179,8 @@ public class Application extends JFrame implements ActionListener {
         xPressed = false;
         if (!symbol.equals("^"))
             minus = false;
+        if (symbol.equals("-"))
+            minus = true;
     }
 
     public void saveMonomial(Integer currentNumber, Integer currentPower) {
@@ -226,12 +194,11 @@ public class Application extends JFrame implements ActionListener {
         }
         System.out.println(currentNumber + " " + currentPower);
         if (!enterPressed) {
-            polynomial1.addMonomial(currentPower, currentNumber);
+            polynomial1.addMonomial(currentPower, currentNumber, 1);
         } else {
-            polynomial2.addMonomial(currentPower, currentNumber);
+            polynomial2.addMonomial(currentPower, currentNumber, 1);
         }
     }
-
     static void appendText(String text, boolean isSuperscript) {
         doc = textPane.getStyledDocument();
         sup = new SimpleAttributeSet();
@@ -247,7 +214,6 @@ public class Application extends JFrame implements ActionListener {
             e.printStackTrace();
         }
     }
-
     public void executeOperation() {
         switch (operation) {
             case "+":
@@ -272,7 +238,7 @@ public class Application extends JFrame implements ActionListener {
                 division.getQuotient().display();
                 appendText("\n", false);
                 appendText("R: ", false);
-                division.getReminder().display();
+                division.getRemainder().display();
                 break;
             case "dx":
                 Derivative derivative = new Derivative(polynomial1);
@@ -285,6 +251,16 @@ public class Application extends JFrame implements ActionListener {
                 integral.getPolynomial2().display();
                 break;
         }
+    }
+
+    public void clearFields() {
+        textPane.setText("");
+        minus = false;
+        power = false;
+        currentNumber = 0;
+        currentPower = 0;
+        polynomial1.getMap().clear();
+        polynomial2.getMap().clear();
     }
 
     public static void main(String[] args) {
