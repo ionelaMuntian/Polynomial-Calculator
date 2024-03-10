@@ -5,52 +5,58 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.text.*;
 import javax.swing.text.html.HTMLDocument;
 
-
 public class Application extends JFrame implements ActionListener {
-    HashMap<Integer, Integer> map = new HashMap<>();
-    HashMap<Integer, Integer> map2 = new HashMap<>();
-    JTextPane textPane;
-    boolean power = false;
-    boolean enterPressed = false;
-    Integer currentNumber = 0;  //the current number until ^,_,+,-,= appear
-    Integer currentPower = 0;
-    String lastInsertedCh = "0";
-    String operation;
-    JTextArea textArea;
-    StyledDocument doc;
-    SimpleAttributeSet sup;
+    private static JTextPane textPane;
+    private JTextArea textArea;
+    private static SimpleAttributeSet sup;
+    private JLabel labelTitle;
+    private JButton button;
+    private Polynomial polynomial1 = new Polynomial();
+    private Polynomial polynomial2 = new Polynomial();
+    private boolean power = false;
+    private boolean enterPressed = false;
+    private boolean xPressed = false;
+    private boolean minus = false;  /* to determine if a coefficient is negative*/
+    private Integer currentNumber = 0;  //the current number until ^,_,+,-,= appear
+    private Integer currentPower = 0;
+    private String lastInsertedCh = "0";
+    static String operation;
+    private static StyledDocument doc;
 
     public Application() {
-        initWindow();
-    }
-
-    public void initWindow() {
         setTitle("Polynomial Computer");
         setSize(new Dimension(500, 800));
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //set background
+        /*set background*/
         getContentPane().setBackground(Color.BLACK);
 
-        //set title
-        JLabel label1 = new JLabel("Polynomial Calculator");
-        label1.setForeground(Color.WHITE);
-        label1.setFont(new Font("Times New Roman", Font.BOLD, 25));
-        label1.setHorizontalAlignment(SwingConstants.CENTER);
-        label1.setBounds(0, 30, getWidth(), 30);
-        getContentPane().add(label1);
+        /*set title (in the app frame)*/
+        labelTitle = new JLabel("Polynomial Calculator");
+        initTitle();
 
+        textPane = new JTextPane();
         setPane();
         setButtons();
     }
 
+    public void initTitle() {
+        labelTitle.setForeground(Color.WHITE);
+        labelTitle.setFont(new Font("Times New Roman", Font.BOLD, 25));
+        labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        labelTitle.setBounds(0, 30, getWidth(), 30);
+        getContentPane().add(labelTitle);
+    }
+
     public void setPane() {
-        textPane = new JTextPane();
         textPane.setBackground(Color.LIGHT_GRAY);
         textPane.setEditable(false);
         textPane.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -62,18 +68,16 @@ public class Application extends JFrame implements ActionListener {
     }
 
     public void setButtons() {
-        String[] buttonLabels = {"9", "8", "7", "6", "5", "4", "3", "2", "1", "0", "+", "-", "*", "/", "^", "_", "integration", "derivative", "=", "Enter", "x", "Clear"};
+        String[] buttonLabels = {"9", "8", "7", "6", "5", "4", "3", "2", "1", "0", "+", "-", "*", "/", "^", "_", "integral", "dx", "=", "Enter", "x", "Clear"};
         int numCols = 3;
         int buttonWidth = 100;
         int buttonHeight = 50;
-
         int padding = 10;
         int startX = 90;
         int startY = getHeight() - 570;
 
-
         for (int i = 0; i < buttonLabels.length; i++) {
-            JButton button = new JButton(buttonLabels[i]);
+            button = new JButton(buttonLabels[i]);
             button.setBounds(startX + (i % numCols) * (buttonWidth + padding), startY + (i / numCols) * (buttonHeight + padding), buttonWidth, buttonHeight);
             button.setBackground(Color.DARK_GRAY);
             button.setForeground(Color.WHITE);
@@ -134,49 +138,52 @@ public class Application extends JFrame implements ActionListener {
                 }
                 break;
             case "_":
-                appendText(String.valueOf("_"), false);
-                buttonSymbol_onAction();
+                buttonSymbol_onAction("_");
                 break;
             case "+":
-                appendText(String.valueOf("+"), false); // Insert as normal text
-                buttonSymbol_onAction();
+                buttonSymbol_onAction("+");
                 break;
             case "-":
-                appendText(String.valueOf(" - "), false);
-                buttonSymbol_onAction();
+                buttonSymbol_onAction(" - ");
+                minus = true;
                 break;
             case "*":
-                appendText(String.valueOf(" * "), false);
-                buttonSymbol_onAction();
+                buttonSymbol_onAction(" * ");
                 break;
             case "/":
-                appendText(String.valueOf(" / "), false);
-                buttonSymbol_onAction();
+                buttonSymbol_onAction(" / ");
                 break;
-            case "integration":
-                appendText(String.valueOf("integral"), false);
-                buttonSymbol_onAction();
+            case "integral":
+                operation = "integral";
+                buttonSymbol_onAction(" integral");
                 break;
-            case "derivative":
-                appendText(String.valueOf("derivative"), false);
-                buttonSymbol_onAction();
+            case "dx":
+                operation = "dx";
+                buttonSymbol_onAction(" dx ");
                 break;
             case "=":
-                appendText(String.valueOf("="), false);
-                buttonSymbol_onAction();
+                buttonSymbol_onAction("=\n");
+                executeOperation();
                 break;
             case "x":
+                xPressed = true;
                 appendText(String.valueOf("x"), false);
-                currentPower = 1;
                 break;
             case "Enter":
-                appendText(String.valueOf("\n"), false);
                 operation = lastInsertedCh;
-                buttonSymbol_onAction();
+                appendText("\n", false);
                 enterPressed = true;
+                minus = false;
                 break;
             case "Clear":
                 textPane.setText(""); // Clear the text pane
+                minus = false;
+                power = false;
+                enterPressed = false;
+                currentNumber = 0;
+                currentPower = 0;
+                polynomial1.getMap().clear();
+                polynomial2.getMap().clear();
                 break;
         }
         lastInsertedCh = e.getActionCommand();
@@ -194,8 +201,38 @@ public class Application extends JFrame implements ActionListener {
         }
     }
 
+    public void buttonSymbol_onAction(String symbol) {
+        /*if =,_,+,-,* are pressed, it means that we must get to the next term (power coeff. are ended)*/
+        power = false;
+        appendText(String.valueOf(symbol), false);
+        StyleConstants.setSuperscript(sup, false);
 
-    private void appendText(String text, boolean isSuperscript) {
+        saveMonomial(currentNumber, currentPower);
+        currentPower = 0;
+        currentNumber = 0;
+        xPressed = false;
+        if (!symbol.equals("^"))
+            minus = false;
+    }
+
+    public void saveMonomial(Integer currentNumber, Integer currentPower) {
+        if (minus)
+            currentNumber *= -1;
+        if (xPressed) {
+            if ((currentPower == 0))
+                currentPower = 1;
+            if (currentNumber == 0)
+                currentNumber = 1;
+        }
+        System.out.println(currentNumber + " " + currentPower);
+        if (!enterPressed) {
+            polynomial1.addMonomial(currentPower, currentNumber);
+        } else {
+            polynomial2.addMonomial(currentPower, currentNumber);
+        }
+    }
+
+    static void appendText(String text, boolean isSuperscript) {
         doc = textPane.getStyledDocument();
         sup = new SimpleAttributeSet();
 
@@ -204,7 +241,6 @@ public class Application extends JFrame implements ActionListener {
         } else {
             StyleConstants.setSuperscript(sup, false);
         }
-
         try {
             doc.insertString(doc.getLength(), text, sup);
         } catch (Exception e) {
@@ -212,21 +248,43 @@ public class Application extends JFrame implements ActionListener {
         }
     }
 
-    public void buttonSymbol_onAction() {
-        //if =,_,+,-,* are pressed, it means that we must get to the next term
-        power = false;
-        StyleConstants.setSuperscript(sup, false);
-        //StyleConstants.setSuperscript(sup, true);
-        saveInHash(currentNumber, currentPower);
-        currentPower = 0;
-        currentNumber = 0;
-    }
-
-    public void saveInHash(int currentNumber, int currentPower) {
-        if (enterPressed = false)
-            map.put(currentPower, currentNumber);
-        else
-            map2.put(currentPower, currentNumber);
+    public void executeOperation() {
+        switch (operation) {
+            case "+":
+                Addition addition = new Addition(polynomial1, polynomial2);
+                addition.computeAddition();
+                addition.getPolynomial3().display();
+                break;
+            case "-":
+                Subtraction subtraction = new Subtraction(polynomial1, polynomial2);
+                subtraction.computeSubtraction();
+                subtraction.getPolynomial3().display();
+                break;
+            case "*":
+                Multiplication multiplication = new Multiplication(polynomial1, polynomial2);
+                multiplication.computeMultiplication();
+                multiplication.getPolynomial3().display();
+                break;
+            case "/":
+                Division division = new Division(polynomial1, polynomial2);
+                division.computeDivision();
+                appendText("Q: ", false);
+                division.getQuotient().display();
+                appendText("\n", false);
+                appendText("R: ", false);
+                division.getReminder().display();
+                break;
+            case "dx":
+                Derivative derivative = new Derivative(polynomial1);
+                derivative.computeDerivative();
+                derivative.getPolynomial2().display();
+                break;
+            case "integral":
+                Integral integral = new Integral(polynomial1);
+                integral.computeIntegral();
+                integral.getPolynomial2().display();
+                break;
+        }
     }
 
     public static void main(String[] args) {
