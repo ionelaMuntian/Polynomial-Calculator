@@ -1,4 +1,7 @@
-package org.example;
+package BussinessLogic;
+
+import DataModels.Coefficient;
+import DataModels.Polynomial;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,8 +22,8 @@ public class Multiplication {
     }
 
     public void computeMultiplication() {
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry1 : polynomial1.getMap().entrySet()) {
-            for (Map.Entry<Integer, Polynomial.Coefficient> entry2 : polynomial2.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry1 : polynomial1.getMap().entrySet()) {
+            for (Map.Entry<Integer, Coefficient> entry2 : polynomial2.getMap().entrySet()) {
 
                 Integer power = entry1.getKey() + entry2.getKey();
                 Integer numeratorProduct = entry1.getValue().getNumerator() * entry2.getValue().getNumerator();
@@ -43,7 +46,7 @@ public class Multiplication {
     // Remove the terms with coefficient 0
     public void removeNullTerms(){
         ArrayList<Integer> unnecessaryTerms = new ArrayList<>();
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry : polynomial3.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry : polynomial3.getMap().entrySet()) {
             if (entry.getValue().getNumerator() == 0) {
                 unnecessaryTerms.add(entry.getKey());
             }

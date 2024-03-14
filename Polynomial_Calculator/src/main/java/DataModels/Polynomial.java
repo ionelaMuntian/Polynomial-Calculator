@@ -1,4 +1,6 @@
-package org.example;
+package DataModels;
+import GUI.Application;
+
 import java.util.*;
 public class Polynomial {
     private HashMap<Integer, Coefficient> map;
@@ -36,7 +38,6 @@ public class Polynomial {
                 maxEntry = entry;
             }
         }
-
         return maxEntry;
     }
 
@@ -61,21 +62,5 @@ public class Polynomial {
         }
     }
 
-    static class Coefficient {
-        private int numerator;
-        private int denominator;
 
-        public Coefficient(int numerator, int denominator) {
-            this.numerator = numerator;
-            this.denominator = denominator;
-        }
-
-        public int getNumerator() {
-            return numerator;
-        }
-
-        public int getDenominator() {
-            return denominator;
-        }
-    }
 }

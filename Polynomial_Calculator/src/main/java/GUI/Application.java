@@ -1,29 +1,27 @@
-package org.example;
+package GUI;
+
+import BussinessLogic.*;
+import DataModels.Polynomial;
 
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
-import javax.swing.text.*;
-import javax.swing.text.html.HTMLDocument;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Application extends JFrame implements ActionListener {
     private static JTextPane textPane;
-    private JTextArea textArea;
-    private static SimpleAttributeSet sup;
-    private JLabel labelTitle;
     private JButton button;
+    private JLabel labelTitle;
     private Polynomial polynomial1 = new Polynomial();
     private Polynomial polynomial2 = new Polynomial();
     private boolean power = false;
     private boolean enterPressed = false;
     private boolean xPressed = false;
-    private boolean minus = false;  /* to determine if a coefficient is negative*/
-    private Integer currentNumber = 0;  //the current number until ^,_,+,-,= appear
+    private boolean minus = false;
+    private Integer currentNumber = 0;
     private Integer currentPower = 0;
     private String lastInsertedCh = "0";
     static String operation;
@@ -36,12 +34,13 @@ public class Application extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        /*set background*/
+        //set background
         getContentPane().setBackground(Color.BLACK);
 
-        /*set title (in the app frame)*/
+        //set title (in the app frame)
         labelTitle = new JLabel("Polynomial Calculator");
         initTitle();
+
 
         textPane = new JTextPane();
         setPane();
@@ -61,14 +60,13 @@ public class Application extends JFrame implements ActionListener {
         textPane.setEditable(false);
         textPane.setFont(new Font("Arial", Font.PLAIN, 20));
 
-        // scroll pane => the text might exceed the textPane
         JScrollPane scrollPane = new JScrollPane(textPane);
-        scrollPane.setBounds(90, 100, getWidth() - 180, getHeight() - 700); // Position and size of text area
+        scrollPane.setBounds(90, 100, getWidth() - 180, getHeight() - 700);
         getContentPane().add(scrollPane);
     }
 
     public void setButtons() {
-        String[] buttonLabels = {"9", "8", "7", "6", "5", "4", "3", "2", "1", "0", "+", "-", "*", "/", "^", "_", "integral", "dx", "=", "Enter", "x", "Clear"};
+        String[] buttonLabels = {"9", "8", "7", "6", "5", "4", "3", "2", "1", "0", "+", "-", "*", "/", "^", "_", "integral", "dx", "=", "NewPolynomial", "x", "Clear"};
         int numCols = 3;
         int buttonWidth = 100;
         int buttonHeight = 50;
@@ -100,70 +98,69 @@ public class Application extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        // Checking which button was clicked
-        switch (e.getActionCommand()) {
-            case "0":
-            case "1":
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
-            case "7":
-            case "8":
-            case "9":
-                buttonNumber_onAction(Integer.parseInt(e.getActionCommand()));
-                break;
-            case "^":
-                if (lastInsertedCh.equals("x")) {
-                    power = true;
-                }
-                break;
-            case "-":
-            case "_":
-            case "+":
-            case "*":
-            case "/":
-                buttonSymbol_onAction(e.getActionCommand());
-                break;
-            case "integral":
-                operation = "integral";
-                buttonSymbol_onAction(" integral");
-                break;
-            case "dx":
-                operation = "dx";
-                buttonSymbol_onAction(" dx ");
-                break;
-            case "=":
-                buttonSymbol_onAction("=\n");
-                executeOperation();
-                break;
-            case "x":
-                xPressed = true;
-                appendText(String.valueOf("x"), false);
-                break;
-            case "Enter":
-                operation = lastInsertedCh;
-                appendText("\n", false);
-                enterPressed = true;
-                minus = false;
-                break;
-            case "Clear":
-                clearFields();
-                break;
+        String input = e.getActionCommand();
+        Matcher matcher;
+        Pattern numberPattern = Pattern.compile("\\d");
+        Pattern operatorPattern = Pattern.compile("[+\\-*/^_=]|integral|dx|x|Clear|NewPolynomial");
+
+        matcher = numberPattern.matcher(input);
+        if (matcher.matches()) {
+            buttonNumber_onAction(Integer.parseInt(input));
+            return;
         }
-        lastInsertedCh = e.getActionCommand();
+
+        matcher = operatorPattern.matcher(input);
+        if (matcher.matches()) {
+            switch (input) {
+                case "^":
+                    if (lastInsertedCh.equals("x")) {
+                        power = true;
+                    }
+                    break;
+                case "-":
+                case "_":
+                case "+":
+                case "*":
+                case "/":
+                    buttonSymbol_onAction(input);
+                    break;
+                case "integral":
+                    operation = "integral";
+                    buttonSymbol_onAction(" integral");
+                    break;
+                case "dx":
+                    operation = "dx";
+                    buttonSymbol_onAction(" dx ");
+                    break;
+                case "=":
+                    buttonSymbol_onAction("=\n");
+                    executeOperation();
+                    break;
+                case "x":
+                    xPressed = true;
+                    appendText(String.valueOf("x"), false);
+                    break;
+                case "NewPolynomial":
+                    operation = lastInsertedCh;
+                    appendText("\n", false);
+                    enterPressed = true;
+                    minus = false;
+                    break;
+                case "Clear":
+                    clearFields();
+                    break;
+            }
+            lastInsertedCh = input;
+        }
     }
 
     public void buttonNumber_onAction(int digit) {
-        System.out.println("Button" + digit + " was clicked!");
         if (power) {
             currentPower = currentPower * 10 + digit;
-            appendText(String.valueOf(digit), true); // Insert as normal text
+            appendText(String.valueOf(digit), true);
         } else {
             currentNumber = currentNumber * 10 + digit;
-            //textPane.setText(textPane.getText() + String.valueOf(digit));
-            appendText(String.valueOf(digit), false); // Insert as normal text
+            appendText(String.valueOf(digit), false);
         }
     }
 
@@ -171,7 +168,6 @@ public class Application extends JFrame implements ActionListener {
         /*if =,_,+,-,* are pressed, it means that we must get to the next term (power coeff. are ended)*/
         power = false;
         appendText(String.valueOf(symbol), false);
-        StyleConstants.setSuperscript(sup, false);
 
         saveMonomial(currentNumber, currentPower);
         currentPower = 0;
@@ -192,16 +188,16 @@ public class Application extends JFrame implements ActionListener {
             if (currentNumber == 0)
                 currentNumber = 1;
         }
-        System.out.println(currentNumber + " " + currentPower);
         if (!enterPressed) {
             polynomial1.addMonomial(currentPower, currentNumber, 1);
         } else {
             polynomial2.addMonomial(currentPower, currentNumber, 1);
         }
     }
-    static void appendText(String text, boolean isSuperscript) {
+
+    public static void appendText(String text, boolean isSuperscript) {
         doc = textPane.getStyledDocument();
-        sup = new SimpleAttributeSet();
+        MutableAttributeSet sup = new SimpleAttributeSet();
 
         if (isSuperscript) {
             StyleConstants.setSuperscript(sup, true);
@@ -214,6 +210,7 @@ public class Application extends JFrame implements ActionListener {
             e.printStackTrace();
         }
     }
+
     public void executeOperation() {
         switch (operation) {
             case "+":

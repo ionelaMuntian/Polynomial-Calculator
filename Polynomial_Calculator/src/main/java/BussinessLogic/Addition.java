@@ -1,6 +1,8 @@
-package org.example;
+package BussinessLogic;
 
-import java.util.Iterator;
+import DataModels.Coefficient;
+import DataModels.Polynomial;
+
 import java.util.Map;
 
 public class Addition {
@@ -13,18 +15,17 @@ public class Addition {
         this.polynomial2 = polynomial2;
         this.polynomial3 = new Polynomial();
     }
-
     public Polynomial getPolynomial3() {
         return polynomial3;
     }
 
     public void computeAddition() {
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry1 : polynomial1.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry1 : polynomial1.getMap().entrySet()) {
             Integer power = entry1.getKey();
-            Polynomial.Coefficient coefficient1 = entry1.getValue();
+            Coefficient coefficient1 = entry1.getValue();
 
             if (polynomial2.getMap().containsKey(power)) {
-                Polynomial.Coefficient coefficient2 = polynomial2.getMap().get(power);
+                Coefficient coefficient2 = polynomial2.getMap().get(power);
                 int divisor = 1, dividendSum = 0;
 
                 //Check if the 2 coefficients have the same denominator
@@ -42,15 +43,13 @@ public class Addition {
         }
 
         // Add remaining terms from polynomial2
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry2 : polynomial2.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry2 : polynomial2.getMap().entrySet()) {
             Integer power = entry2.getKey();
-            Polynomial.Coefficient coefficient = entry2.getValue();
+            Coefficient coefficient = entry2.getValue();
 
             if (!polynomial3.getMap().containsKey(power)) {
                 polynomial3.addMonomial(power, coefficient.getNumerator(), coefficient.getDenominator());
             }
         }
     }
-
-
 }

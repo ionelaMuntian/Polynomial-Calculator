@@ -1,7 +1,9 @@
-package org.example;
+package BussinessLogic;
+
+import DataModels.Coefficient;
+import DataModels.Polynomial;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Subtraction {
@@ -20,12 +22,12 @@ public class Subtraction {
     }
 
     public void computeSubtraction() {
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry1 : polynomial1.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry1 : polynomial1.getMap().entrySet()) {
             Integer power = entry1.getKey();
-            Polynomial.Coefficient coefficient1 = entry1.getValue();
+            Coefficient coefficient1 = entry1.getValue();
 
             if (polynomial2.getMap().containsKey(power)) {
-                Polynomial.Coefficient coefficient2 = polynomial2.getMap().get(power);
+                Coefficient coefficient2 = polynomial2.getMap().get(power);
                 int divisor = 1, dividendDiff = 0;
 
                 //Check if the 2 coefficients have the same denominator
@@ -43,9 +45,9 @@ public class Subtraction {
         }
 
         // Add remaining terms from polynomial2
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry2 : polynomial2.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry2 : polynomial2.getMap().entrySet()) {
             Integer power = entry2.getKey();
-            Polynomial.Coefficient coefficient = entry2.getValue();
+            Coefficient coefficient = entry2.getValue();
 
             if (!polynomial3.getMap().containsKey(power)) {
                 polynomial3.addMonomial(power,-coefficient.getNumerator(),coefficient.getDenominator());
@@ -54,7 +56,7 @@ public class Subtraction {
 
         // Remove the terms with coefficient 0
         ArrayList<Integer> unnecessaryTerms = new ArrayList<>();
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry : polynomial3.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry : polynomial3.getMap().entrySet()) {
             if (entry.getValue().getNumerator() == 0) {
                 unnecessaryTerms.add(entry.getKey());
             }

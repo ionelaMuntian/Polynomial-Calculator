@@ -1,4 +1,8 @@
-package org.example;
+package BussinessLogic;
+
+import DataModels.Coefficient;
+import DataModels.Polynomial;
+import GUI.Application;
 
 import java.util.Map;
 
@@ -23,7 +27,7 @@ public class Division {
         return remainder;
     }
 
-    public Polynomial divisionMonomials(Map.Entry<Integer, Polynomial.Coefficient> a, Map.Entry<Integer, Polynomial.Coefficient> b) {
+    public Polynomial divisionMonomials(Map.Entry<Integer, Coefficient> a, Map.Entry<Integer, Coefficient> b) {
         Polynomial term = new Polynomial();
 
         // Division between 2 fractions : (a1/a2)/(b1/b2)=(a1*b2)/(a2*b1)
@@ -36,8 +40,8 @@ public class Division {
     }
 
     public void computeDivision() {
-        Map.Entry<Integer, Polynomial.Coefficient> maxDividend = dividend.firstMonomial();
-        Map.Entry<Integer, Polynomial.Coefficient> maxDivisor = divisor.firstMonomial();
+        Map.Entry<Integer, Coefficient> maxDividend = dividend.firstMonomial();
+        Map.Entry<Integer, Coefficient> maxDivisor = divisor.firstMonomial();
 
         if (divisor.firstMonomial().getValue().getNumerator()==0) {
             Application.appendText("Division by 0 is not possible!\n", false);

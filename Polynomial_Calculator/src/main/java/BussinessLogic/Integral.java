@@ -1,4 +1,7 @@
-package org.example;
+package BussinessLogic;
+
+import DataModels.Coefficient;
+import DataModels.Polynomial;
 
 import java.util.Map;
 
@@ -15,7 +18,7 @@ public class Integral {
         return polynomial2;
     }
     public void computeIntegral() {
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry : polynomial1.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry : polynomial1.getMap().entrySet()) {
             Integer power =  entry.getKey() + 1;
             Integer numerator = entry.getValue().getNumerator();
             Integer denominator = entry.getValue().getDenominator() * power;

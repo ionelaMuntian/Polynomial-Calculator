@@ -1,4 +1,7 @@
-package org.example;
+package BussinessLogic;
+
+import DataModels.Coefficient;
+import DataModels.Polynomial;
 
 import java.util.Map;
 
@@ -16,9 +19,9 @@ public class Derivative {
     }
 
     public void computeDerivative() {
-        for (Map.Entry<Integer, Polynomial.Coefficient> entry : polynomial1.getMap().entrySet()) {
+        for (Map.Entry<Integer, Coefficient> entry : polynomial1.getMap().entrySet()) {
             Integer power = entry.getKey();
-            Polynomial.Coefficient coefficient = entry.getValue();
+           Coefficient coefficient = entry.getValue();
 
             if (power > 0) {
                 int derivativeNumerator = coefficient.getNumerator() * power;
