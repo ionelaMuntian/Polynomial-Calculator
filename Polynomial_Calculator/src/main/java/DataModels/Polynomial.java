@@ -4,15 +4,12 @@ import GUI.Application;
 import java.util.*;
 public class Polynomial {
     private HashMap<Integer, Coefficient> map;
-
     public Polynomial() {
         this.map = new HashMap<>();
     }
-
     public HashMap<Integer, Coefficient> getMap() {
         return map;
     }
-
     public void addMonomial(Integer power, Integer numerator, Integer denominator) {
 
         /*If a monomial with the same power already is in the HashMap, the monomials will be added so that
@@ -40,6 +37,17 @@ public class Polynomial {
         }
         return maxEntry;
     }
+    public void removeNullTerms(){
+        ArrayList<Integer> unnecessaryTerms = new ArrayList<>();
+        for (Map.Entry<Integer, Coefficient> entry : this.getMap().entrySet()) {
+            if (entry.getValue().getNumerator() == 0) {
+                unnecessaryTerms.add(entry.getKey());
+            }
+        }
+        for (Integer key : unnecessaryTerms) {
+            this.getMap().remove(key);
+        }
+    }
 
     public void display() {
         TreeMap<Integer, Coefficient> reverseMap = new TreeMap<>(java.util.Collections.reverseOrder());
@@ -60,6 +68,7 @@ public class Polynomial {
                 Application.appendText(String.valueOf(coefficient.getDenominator()), false);
             }
         }
+        reverseMap.clear();
     }
 
 

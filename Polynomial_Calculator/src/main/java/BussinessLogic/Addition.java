@@ -43,6 +43,10 @@ public class Addition {
         }
 
         // Add remaining terms from polynomial2
+        addRemainingTerms();
+        polynomial3.removeNullTerms();
+    }
+    private void addRemainingTerms(){
         for (Map.Entry<Integer, Coefficient> entry2 : polynomial2.getMap().entrySet()) {
             Integer power = entry2.getKey();
             Coefficient coefficient = entry2.getValue();
@@ -52,4 +56,5 @@ public class Addition {
             }
         }
     }
+
 }

@@ -47,7 +47,6 @@ public class Division {
             Application.appendText("Division by 0 is not possible!\n", false);
             return;
         }
-
         while (maxDividend != null && maxDividend.getKey() >= maxDivisor.getKey()) {
             Polynomial term = divisionMonomials(maxDividend, maxDivisor);
 
@@ -62,8 +61,9 @@ public class Division {
             dividend = subtraction.getPolynomial3();
             maxDividend = dividend.firstMonomial();
         }
-
         // Set the remainder to the remaining dividend after the division process
         remainder = dividend;
+        remainder.removeNullTerms();
+        quotient.removeNullTerms();
     }
 }

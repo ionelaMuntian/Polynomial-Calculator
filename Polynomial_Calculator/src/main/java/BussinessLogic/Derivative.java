@@ -13,7 +13,6 @@ public class Derivative {
         this.polynomial1 = polynomial1;
         this.polynomial2 = new Polynomial();
     }
-
     public Polynomial getPolynomial2() {
         return polynomial2;
     }
@@ -32,6 +31,7 @@ public class Derivative {
                 polynomial2.addMonomial(0, 0,1);
             }
         }
+        polynomial2.removeNullTerms();
     }
 }
 
