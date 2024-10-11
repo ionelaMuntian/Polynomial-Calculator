@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a438a6b2-821a-4d89-a105-f2ce5ee05985" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/~$2024_Documentation_Assignment1_Muntian_Ionela.doc" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="package-info" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2dKDka6ohP8LXZoGFAOEeLGoiu8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Mariana Ionela/MATERII/SEM2/PT/PT2024_30423_Muntian_Mariana-Ionela_Assignment1/Polynomial_Calculator&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="DataModels" />
+      <recent name="BussinessLogic" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.SubtractionTest">
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GUI.Application" />
+      <module name="Polynomial_Calculator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoefficientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Polynomial_Calculator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DataModels.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DataModels" />
+      <option name="MAIN_CLASS_NAME" value="DataModels.CoefficientTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DerivativeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Polynomial_Calculator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="BussinessLogic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="BussinessLogic" />
+      <option name="MAIN_CLASS_NAME" value="BussinessLogic.DerivativeTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PolynomialTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Polynomial_Calculator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DataModels.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DataModels" />
+      <option name="MAIN_CLASS_NAME" value="DataModels.PolynomialTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SubtractionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Polynomial_Calculator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="BussinessLogic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="BussinessLogic" />
+      <option name="MAIN_CLASS_NAME" value="BussinessLogic.SubtractionTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.SubtractionTest" />
+        <item itemvalue="Application.Application" />
+        <item itemvalue="JUnit.PolynomialTest" />
+        <item itemvalue="JUnit.CoefficientTest" />
+        <item itemvalue="JUnit.DerivativeTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a438a6b2-821a-4d89-a105-f2ce5ee05985" name="Changes" comment="" />
+      <created>1709748022245</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709748022245</updated>
+      <workItem from="1709748022823" duration="9246000" />
+      <workItem from="1709758657658" duration="5607000" />
+      <workItem from="1709804209522" duration="11001000" />
+      <workItem from="1709838498151" duration="59000" />
+      <workItem from="1709848046650" duration="1216000" />
+      <workItem from="1709892985605" duration="2441000" />
+      <workItem from="1709977319730" duration="39626000" />
+      <workItem from="1710061049464" duration="9552000" />
+      <workItem from="1710172857619" duration="221000" />
+      <workItem from="1710247518100" duration="3183000" />
+      <workItem from="1710410249439" duration="575000" />
+      <workItem from="1710414566274" duration="2642000" />
+      <workItem from="1710450098134" duration="5200000" />
+      <workItem from="1710497127080" duration="4490000" />
+      <workItem from="1710524645727" duration="21242000" />
+      <workItem from="1710616684417" duration="151000" />
+      <workItem from="1710884757299" duration="452000" />
+      <workItem from="1710935975910" duration="1373000" />
+      <workItem from="1710963701608" duration="7975000" />
+      <workItem from="1710971962533" duration="6256000" />
+      <workItem from="1711038359005" duration="5144000" />
+      <workItem from="1711054421702" duration="2984000" />
+      <workItem from="1711101855554" duration="2210000" />
+      <workItem from="1712402128853" duration="37000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/BussinessLogic/AdditionTest.java</url>
+          <line>36</line>
+          <properties class="BussinessLogic.AdditionTest" method="computeAdditionTest2">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
